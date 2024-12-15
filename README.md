@@ -2,7 +2,7 @@
 
 ## Linting and format
 
-Eslint, prettier e husky, commit lint
+This base use `eslint` and `husky` to ensure the code quality.
 
 ## Testing
 
