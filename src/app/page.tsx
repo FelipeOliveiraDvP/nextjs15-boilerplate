@@ -1,13 +1,18 @@
-interface User {
-  name: string;
-  age: number;
-}
+import Counter from "@/components/Counter";
 
 export default function Home() {
-  const user: User = {
-    name: "Lucas",
-    age: 23,
-  };
-
-  return <div>{user.name}</div>;
+  return (
+    <div className="h-full flex justify-center items-center">
+      <div className="container space-y-4">
+        <h1 className="text-3xl font-bold text-center">
+          Welcome to NextJS 15 Boilerplate
+        </h1>
+        <p className="text-lg font-medium text-center">
+          Use this boilerplate to start your next project with NextJS 15,
+          include tools for linting, testing, logging, and more.
+        </p>
+        <Counter />
+      </div>
+    </div>
+  );
 }
