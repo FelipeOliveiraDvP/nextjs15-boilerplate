@@ -53,6 +53,9 @@ jobs:
       - name: Unit Tests with vitest
         run: pnpm test
 
+      - name: Install Cypress
+        run: npx cypress install
+
       - name: Verify Cypress
         run: npx cypress verify
 
