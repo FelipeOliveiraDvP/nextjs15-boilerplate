@@ -64,8 +64,5 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Wait for server to be ready
-        run: npx wait-on http://localhost:3000
-
       - name: Run e2e tests with Cypress
-        run: npx cypress run
+        run: npx wait-on http://localhost:3000 && npx cypress run
