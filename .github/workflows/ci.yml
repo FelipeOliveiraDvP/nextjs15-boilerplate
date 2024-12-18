@@ -60,9 +60,7 @@ jobs:
         run: npx cypress verify
 
       - name: Start Next.js server
-        run: pnpm run build && pnpm start &
-        env:
-          NODE_ENV: production
+        run: pnpm test:server
 
       - name: Run e2e tests with Cypress
         run: npx wait-on http://localhost:3000 && npx cypress run
