@@ -14,7 +14,7 @@ on:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +42,28 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Run unit tests with vitest
         run: pnpm test
 
@@ -53,15 +75,3 @@ jobs:
         with:
           build: pnpm build
           start: pnpm start
-
-      # - name: Install Cypress
-      #   run: npx cypress install
-
-      # - name: Verify Cypress
-      #   run: npx cypress verify
-
-      # - name: Start Next.js server
-      #   run: pnpm test:server
-
-      # - name: Run e2e tests with Cypress
-      #   run: npx cypress run
