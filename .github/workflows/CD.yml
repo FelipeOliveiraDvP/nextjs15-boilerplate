@@ -15,22 +15,24 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: Deploy
+  build-docker-image:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
-
-      - name: Install PNPM
-        run: npm install -g pnpm@9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -42,7 +44,7 @@ jobs:
         run: docker build -t nextjs15-boilerplate .
 
       #
-      # Exemplo de deploy para o ambiente de produção
+      # Exemplo de deploy da imagem do projeto para o Docker Hub e Kubernetes
       #
       # - name: Login to Docker Hub
       #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
