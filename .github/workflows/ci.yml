@@ -50,7 +50,7 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Run unit Tests with vitest
+      - name: Run unit tests with vitest
         run: pnpm test
 
       - name: Install Cypress
@@ -59,11 +59,13 @@ jobs:
       - name: Verify Cypress
         run: npx cypress verify
 
-      - name: Start test server
-        run: pnpm test:server
+      - name: Start Next.js server
+        run: pnpm run build && pnpm start &
+        env:
+          NODE_ENV: production
 
-      - name: Run tests with Cypress
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:3000
+
+      - name: Run e2e tests with Cypress
         run: npx cypress run
-
-      - name: Build
-        run: pnpm build
