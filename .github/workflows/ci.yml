@@ -28,26 +28,34 @@ jobs:
         run: pnpm install
 
   test:
+    name: Run all tests
+    runs-on: ubuntu-22.04
+
     strategy:
       matrix:
         node-version: [20]
-
-    name: Run all tests
-    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Retrieve Git history, needed to verify commits
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+
       - run: npm ci
 
       - name: Build Next.js for E2E tests
         run: npm run build
+
         # TODO: Add Sentry
         # env:
         #   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
