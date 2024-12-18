@@ -3,7 +3,7 @@
 # Nessa pipeline, é verificado se o código está seguindo as boas práticas de desenvolvimento, como lint, testes e tipagem.
 # Aqui também é verificado se todos os testes estão passando, tanto os unitários quanto os de integração.
 
-name: NextJs 15 Boilerplate CI
+name: CI Pipeline
 
 on:
   push:
@@ -50,7 +50,7 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Unit Tests with vitest
+      - name: Run unit Tests with vitest
         run: pnpm test
 
       - name: Install Cypress
@@ -59,10 +59,11 @@ jobs:
       - name: Verify Cypress
         run: npx cypress verify
 
-      - name: E2E Tests with Cypress
-        run: |
-          pnpm test:server
-          npx cypress run
+      - name: Start test server
+        run: pnpm test:server
+
+      - name: Run tests with Cypress
+        run: npx cypress run
 
       - name: Build
         run: pnpm build

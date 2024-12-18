@@ -4,7 +4,7 @@
 # Você pode customizar essa pipeline para fazer o deploy para o ambiente que desejar.
 # Como exemplo, iremos realizar o deploy para o ambiente de produção utilizando o Docker.
 
-name: Next Js 15 Boilerplate CI
+name: CD Pipeline
 
 on:
   push:
