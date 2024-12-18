@@ -33,14 +33,6 @@ jobs:
           node-version: 20
           cache: "pnpm"
 
-      - name: Cache Cypress
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -53,14 +45,20 @@ jobs:
       - name: Run unit tests with vitest
         run: pnpm test
 
-      - name: Install Cypress
-        run: npx cypress install
-
-      - name: Verify Cypress
-        run: npx cypress verify
-
-      - name: Start Next.js server
-        run: pnpm test:server
-
       - name: Run e2e tests with Cypress
-        run: npx cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+
+      # - name: Install Cypress
+      #   run: npx cypress install
+
+      # - name: Verify Cypress
+      #   run: npx cypress verify
+
+      # - name: Start Next.js server
+      #   run: pnpm test:server
+
+      # - name: Run e2e tests with Cypress
+      #   run: npx cypress run
