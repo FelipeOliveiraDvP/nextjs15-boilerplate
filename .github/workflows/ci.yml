@@ -45,11 +45,14 @@ jobs:
       - name: Run unit tests with vitest
         run: pnpm test
 
+      - name: Install Cypress
+        run: npx cypress install
+
       - name: Run e2e tests with Cypress
         uses: cypress-io/github-action@v6
         with:
-          build: npm run build
-          start: npm start
+          build: pnpm build
+          start: pnpm start
 
       # - name: Install Cypress
       #   run: npx cypress install
