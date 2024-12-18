@@ -63,4 +63,4 @@ jobs:
         run: pnpm test:server
 
       - name: Run e2e tests with Cypress
-        run: npx wait-on http://localhost:3000 && npx cypress run
+        run: npx cypress run
