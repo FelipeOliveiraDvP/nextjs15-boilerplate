@@ -7,47 +7,73 @@
 name: Next Js 15 Boilerplate CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
-  deploy:
-    name: Deploy
+  cache-and-install:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
 
-      - name: Install PNPM
-        run: npm install -g pnpm@9
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
-      - name: Build application
-        run: pnpm build
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
 
-      - name: Build Docker image
-        run: docker build -t nextjs15-boilerplate .
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 20
+#           cache: "pnpm"
 
-      - name: Push Docker image
-        run: docker tag nextjs15-boilerplate "${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest" && docker push "${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest"
+#       - name: Install PNPM
+#         run: npm install -g pnpm@9
 
-      - name: Deploy application
-        run: |
-          kubectl set image deployment/nextjs15-boilerplate nextjs15-boilerplate="${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest"
-          kubectl rollout status deployment/nextjs15-boilerplate
+#       - name: Install dependencies
+#         run: pnpm install --frozen-lockfile
+
+#       - name: Build application
+#         run: pnpm build
+
+#       - name: Build Docker image
+#         run: docker build -t nextjs15-boilerplate .
+
+#       - name: Login to Docker Hub
+#         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+#       - name: Push Docker image
+#         run: docker tag nextjs15-boilerplate "${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest" && docker push "${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest"
+
+#       - name: Deploy application
+#         run: |
+#           kubectl set image deployment/nextjs15-boilerplate nextjs15-boilerplate="${{ secrets.DOCKER_USERNAME }}/nextjs15-boilerplate:latest"
+#           kubectl rollout status deployment/nextjs15-boilerplate

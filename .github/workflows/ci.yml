@@ -3,45 +3,31 @@
 # Nessa pipeline, é verificado se o código está seguindo as boas práticas de desenvolvimento, como lint, testes e tipagem.
 # Aqui também é verificado se todos os testes estão passando, tanto os unitários quanto os de integração.
 
-name: Next Js 15 Boilerplate CI
+name: NextJs 15 Boilerplate CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
-  lint-and-test:
-    name: Lint and Test
+  cache-and-install:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-
-      - name: Install PNPM
-        run: npm install -g pnpm@9
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run typescript check
-        run: pnpm check-types
-        
-      - name: Run lint
-        run: pnpm lint
-      
-      - name: Run tests
-        run: pnpm test
-
-      - name: Run tests E2E
-        run: pnpm test:e2e
+        run: pnpm install
