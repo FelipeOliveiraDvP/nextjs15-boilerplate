@@ -51,10 +51,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: npm ci
+      - run: pnpm ci
 
       - name: Build Next.js for E2E tests
-        run: npm run build
+        run: pnpm build
 
         # TODO: Add Sentry
         # env:
@@ -65,16 +65,16 @@ jobs:
         run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       - name: Linter
-        run: npm run lint
+        run: pnpm lint
 
       - name: Type checking
-        run: npm run check-types
+        run: pnpm check-types
 
       - name: Run unit tests
-        run: npm run test -- --coverage
+        run: pnpm test -- --coverage
 
       - name: Run E2E tests
-        run: npm run test:e2e
+        run: pnpm test:e2e
 
       #   - name: Upload coverage reports to Codecov
       #     uses: codecov/codecov-action@v5
