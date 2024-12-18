@@ -51,8 +51,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: pnpm ci
-
       - name: Build Next.js for E2E tests
         run: pnpm build
 
