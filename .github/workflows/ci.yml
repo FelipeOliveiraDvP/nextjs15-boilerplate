@@ -14,15 +14,15 @@ on:
       - main
 
 jobs:
-  cache-and-install:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
@@ -50,11 +50,16 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Test
+      - name: Unit Tests with vitest
         run: pnpm test
 
-      - name: Test E2E
-        run: pnpm test:e2e
+      - name: Verify Cypress
+        run: npx cypress verify
+
+      - name: E2E Tests with Cypress
+        run: |
+          pnpm test:server
+          npx cypress run
 
       - name: Build
         run: pnpm build
