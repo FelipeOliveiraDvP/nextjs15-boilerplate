@@ -6,8 +6,12 @@
 name: NextJs 15 Boilerplate CI
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   cache-and-install:
@@ -30,4 +34,19 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typescript check types
+        run: pnpm check-types
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Test E2E
+        run: pnpm test:e2e
+
+      - name: Build
+        run: pnpm build

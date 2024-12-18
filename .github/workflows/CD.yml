@@ -7,8 +7,12 @@
 name: Next Js 15 Boilerplate CI
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   cache-and-install:
